@@ -1,3 +1,18 @@
-.idea
+# Intellij
+.idea/
+*.iml
+*.iws
 
+# Mac
 .DS_Store
+
+# Maven
+log/
+target/
+*.log
+*.log.gz
+*.tmp
+
+FoodOrderingApp-api/target/
+FoodOrderingApp-db/target/
+FoodOrderingApp-service/target/
