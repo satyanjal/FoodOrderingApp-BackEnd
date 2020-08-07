@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "customer")
@@ -14,7 +15,7 @@ import javax.validation.constraints.Size;
         }
 )
 
-public class CustomerEntity {
+public class CustomerEntity implements Serializable {
 
     @Id
     @Column(name = "id")
