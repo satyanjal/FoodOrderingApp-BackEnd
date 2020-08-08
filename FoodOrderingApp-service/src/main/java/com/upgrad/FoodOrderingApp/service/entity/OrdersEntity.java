@@ -29,9 +29,6 @@ public class OrdersEntity {
     @NotNull
     private Double bill;
 
-    @Column(name = "coupon_id")
-    private Integer couponId;
-
     @Column(name = "discount")
     @NotNull
     private Double discount;
@@ -40,19 +37,14 @@ public class OrdersEntity {
     @NotNull
     private Date date;
 
-    @Column(name = "payment_id")
-    private Integer paymentId;
-
-    @Column(name = "customer_id")
-    @NotNull
-    private Integer customerId;
-
     @ManyToOne
     @JoinColumn(name = "address_id")
+    @NotNull
     private AddressEntity address;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
+    @NotNull
     private RestaurantEntity restaurant;
 
     @ManyToOne
@@ -61,8 +53,8 @@ public class OrdersEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @NotNull
     private CustomerEntity customer;
-
 
     @ManyToOne
     @JoinColumn(name = "coupon_id")
@@ -81,10 +73,6 @@ public class OrdersEntity {
 
     public void setBill(Double bill) {this.bill = bill;}
 
-    public Integer getCouponId() {return couponId;}
-
-    public void setCouponId(Integer couponId) {this.couponId = couponId;}
-
     public Double getDiscount() {return discount;}
 
     public void setDiscount(Double discount) {this.discount = discount;}
@@ -92,14 +80,6 @@ public class OrdersEntity {
     public Date getDate() {return date;}
 
     public void setDate(Date date) {this.date = date;}
-
-    public Integer getPaymentId() {return paymentId;}
-
-    public void setPaymentId(Integer paymentId) {this.paymentId = paymentId;}
-
-    public Integer getCustomerId() {return customerId;}
-
-    public void setCustomerId(Integer customerId) {this.customerId = customerId;}
 
     public AddressEntity getAddress() {return address;}
 
