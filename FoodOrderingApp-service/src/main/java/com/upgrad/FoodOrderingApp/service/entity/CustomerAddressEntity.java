@@ -18,14 +18,6 @@ public class CustomerAddressEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "customer_id")
-    @NotNull
-    private Integer customerId;
-
-    @Column(name = "address_id")
-    @NotNull
-    private Integer addressId;
-
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
@@ -38,14 +30,6 @@ public class CustomerAddressEntity {
     public Long getId() {return id;}
 
     public void setId(Long id) {this.id = id;}
-
-    public Integer getCustomerId() {return customerId;}
-
-    public void setCustomerId(Integer customerId) {this.customerId = customerId;}
-
-    public Integer getAddressId() {return addressId;}
-
-    public void setAddressId(Integer addressId) {this.addressId = addressId;}
 
     public CustomerEntity getCustomer() {return customer;}
 

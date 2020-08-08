@@ -40,16 +40,13 @@ public class AddressEntity {
     @Size(max = 30)
     private String pincode;
 
-    @Column(name = "state_id")
-    @NotNull
-    private Integer stateId;
-
     @Column(name = "active")
     @NotNull
     private Integer active;
 
     @ManyToOne
     @JoinColumn(name = "state_id")
+    @NotNull
     private StateEntity state;
 
 
@@ -76,10 +73,6 @@ public class AddressEntity {
     public String getPincode() {return pincode;}
 
     public void setPincode(String pincode) {this.pincode = pincode;}
-
-    public Integer getStateId() {return stateId;}
-
-    public void setStateId(Integer stateId) {this.stateId = stateId;}
 
     public Integer getActive() {return active;}
 
