@@ -67,6 +67,17 @@ public class CustomerService {
             throw new SignUpRestrictedException("SGR-004", "Weak password!");
         }
 
+        if (customerEntity == null || customerEntity.getFirstName() == null
+                || customerEntity.getContactNumber() == null
+                || customerEntity.getEmail() == null
+                || customerEntity.getPassword() == null
+                || customerEntity.getFirstName().isEmpty()
+                || customerEntity.getEmail().isEmpty() || customerEntity.getPassword().isEmpty()
+                || customerEntity.getContactNumber().isEmpty()
+        ) {
+            throw new SignUpRestrictedException("SGR-005", "Except last name all fields should be filled");
+        }
+
         String[] encryptedText = passwordCryptographyProvider.encrypt(customerEntity.getPassword());
         customerEntity.setSalt(encryptedText[0]);
         customerEntity.setPassword(encryptedText[1]);
