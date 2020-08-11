@@ -21,8 +21,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @RequestMapping(method = RequestMethod.POST, path = "/customer/signup",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignupCustomerResponse> customerSignup(@RequestBody final SignupCustomerRequest signupCustomerRequest)
             throws SignUpRestrictedException {
 
@@ -33,9 +32,8 @@ public class CustomerController {
         customerEntity.setEmail(signupCustomerRequest.getEmailAddress());
         customerEntity.setPassword(signupCustomerRequest.getPassword());
         customerEntity.setContactNumber(signupCustomerRequest.getContactNumber());
-        customerEntity.setSalt("1234abc"); // will get overwritten in service class
+        customerEntity.setSalt("1234abc");
 
-        //Invoke business Service to signup & return SignupCustomerResponse
         final CustomerEntity createdCustomerEntity = customerService.signup(customerEntity);
         SignupCustomerResponse customerResponse = new SignupCustomerResponse().id(createdCustomerEntity.getUuid())
                 .status("CUSTOMER SUCCESSFULLY REGISTERED");
