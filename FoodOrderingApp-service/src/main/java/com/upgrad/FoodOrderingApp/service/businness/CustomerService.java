@@ -20,7 +20,14 @@ public class CustomerService {
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity signup(CustomerEntity customerEntity) throws SignUpRestrictedException {
 
-        String[] encryptedText = passwordCryptographyProvider.encrypt(CustomerEntity.getPassword());
+        CustomerEntity existingUser1 = customerDao
+                .getCustomerByContactNumber(customerEntity.getContactNumber());
+        if (existingUser1 != null) {
+            throw new SignUpRestrictedException("SGR-001",
+                    "This contact number is already registered! Try other contact number.");
+        }
+
+        String[] encryptedText = passwordCryptographyProvider.encrypt(customerEntity.getPassword());
         customerEntity.setSalt(encryptedText[0]);
         customerEntity.setPassword(encryptedText[1]);
         return customerDao.createCustomer(customerEntity);
