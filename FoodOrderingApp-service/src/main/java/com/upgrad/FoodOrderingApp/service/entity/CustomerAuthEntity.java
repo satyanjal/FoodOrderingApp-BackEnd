@@ -6,10 +6,12 @@ import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "customer_auth")
+@Table(name = "customer_auth", schema = "public")
 @NamedQueries(
         {
                 //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
+                @NamedQuery(name = "customerAuthTokenByAccessToken",
+                        query = "select ct from CustomerAuthEntity ct where ct.accessToken =:accessToken")
         }
 )
 
