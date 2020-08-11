@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.regex.Pattern;
 
 @Service
@@ -19,13 +18,32 @@ public class CustomerService {
     @Autowired
     private PasswordCryptographyProvider passwordCryptographyProvider;
 
-    private boolean isValidEmail(String email) {
+    private boolean ValidEmail(String email) {
         String emailRegex = "^[A-Z0-9]+@[A-Z0-9]+\\.[A-Z0-9]{2,7}$";
 
         Pattern pat = Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE);
         if (email == null)
             return false;
         return pat.matcher(email).matches();
+    }
+
+    private boolean ValidContactNumber(String contactNumber) {
+        String contactNUmberRegex = "\\d{10}";
+
+        Pattern pat = Pattern.compile(contactNUmberRegex);
+        if (contactNumber == null)
+            return false;
+        return pat.matcher(contactNumber).matches();
+    }
+
+    private boolean WeakPassword(String password) {
+
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#@$%&*!^]).{8,}$";
+
+        Pattern pat = Pattern.compile(passwordRegex);
+        if (password == null)
+            return false;
+        return pat.matcher(password).matches();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
