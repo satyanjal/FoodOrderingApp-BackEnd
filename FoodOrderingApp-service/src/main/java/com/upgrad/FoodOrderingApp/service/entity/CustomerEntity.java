@@ -12,6 +12,10 @@ import java.io.Serializable;
 @NamedQueries(
         {
                 //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
+                @NamedQuery(name = "customerById", query = "select c from CustomerEntity c where c.id = :id"),
+                @NamedQuery(name = "customerByUUID", query = "select c from CustomerEntity c where c.uuid = :uuid"),
+                @NamedQuery(name = "customerByEmail", query = "select c from CustomerEntity c where c.email = :email"),
+                @NamedQuery(name = "customerByContactNumber", query = "select c from CustomerEntity c where c.contactNumber = :contactNumber")
         }
 )
 
