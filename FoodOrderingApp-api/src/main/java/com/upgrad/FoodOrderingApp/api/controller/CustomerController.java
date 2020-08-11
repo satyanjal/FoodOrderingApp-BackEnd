@@ -20,12 +20,12 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping(method = RequestMethod.POST, path = "/customer/signup",
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.POST, path = "/customer/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignupCustomerResponse> customerSignup(@RequestBody final SignupCustomerRequest signupCustomerRequest)
             throws SignUpRestrictedException {
 
         final CustomerEntity customerEntity = new CustomerEntity();
+
         customerEntity.setUuid(UUID.randomUUID().toString());
         customerEntity.setFirstName(signupCustomerRequest.getFirstName());
         customerEntity.setLastName(signupCustomerRequest.getLastName());
@@ -37,6 +37,6 @@ public class CustomerController {
         final CustomerEntity createdCustomerEntity = customerService.signup(customerEntity);
         SignupCustomerResponse customerResponse = new SignupCustomerResponse().id(createdCustomerEntity.getUuid())
                 .status("CUSTOMER SUCCESSFULLY REGISTERED");
-        return new ResponseEntity<SignupCustomerResponse>(customerResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
     }
 }

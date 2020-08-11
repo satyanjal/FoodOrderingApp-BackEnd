@@ -19,7 +19,7 @@ public class CustomerService {
     private PasswordCryptographyProvider passwordCryptographyProvider;
 
     private boolean ValidEmail(String email) {
-        String emailRegex = "^[A-Z0-9]+@[A-Z0-9]+\\.[A-Z0-9]{2,7}$";
+        String emailRegex = "^[A-Z0-9_.]+@[A-Z0-9_.]+\\.[A-Z0-9]{2,7}$";
 
         Pattern pat = Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE);
         if (email == null)
@@ -53,6 +53,18 @@ public class CustomerService {
 
         if (existingUser1 != null) {
             throw new SignUpRestrictedException("SGR-001", "This contact number is already registered! Try other contact number.");
+        }
+
+        if(!ValidEmail(customerEntity.getEmail())){
+            throw new SignUpRestrictedException("SGR-002", "Invalid email-id format!");
+        }
+
+        if(!ValidContactNumber(customerEntity.getContactNumber())){
+            throw new SignUpRestrictedException("SGR-003", "Invalid contact number!");
+        }
+
+        if(!WeakPassword(customerEntity.getPassword())){
+            throw new SignUpRestrictedException("SGR-004", "Weak password!");
         }
 
         String[] encryptedText = passwordCryptographyProvider.encrypt(customerEntity.getPassword());
