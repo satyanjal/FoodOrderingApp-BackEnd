@@ -9,6 +9,7 @@ import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -68,5 +69,8 @@ public class CustomerController {
                 .contactNumber(customer.getContactNumber()).emailAddress(customer.getEmail())
                 .message("LOGGED IN SUCCESSFULLY");
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("access-token", customerAuthEntity.getAccessToken());
+        return new ResponseEntity<LoginResponse>(loginResponse, headers, HttpStatus.OK);
     }
 }
