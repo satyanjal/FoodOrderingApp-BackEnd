@@ -50,9 +50,11 @@ public class CustomerController {
     public ResponseEntity<LoginResponse> login(@RequestHeader("authorization") final String authorization)
             throws AuthenticationFailedException {
 
-        byte[] decode = Base64.getDecoder().decode(authorization);
+//        System.out.println(authorization);
+        String encodedText = authorization.split("Basic ")[1];
+
+        byte[] decode = Base64.getDecoder().decode(encodedText);
         String decodedText = new String(decode);
-        decodedText = decodedText.split("Basic ")[1];
         String[] decodedArray = decodedText.split(":");
         String contactNumber, password;
         try{
