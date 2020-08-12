@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "customer_auth", schema = "public")
@@ -38,16 +39,13 @@ public class CustomerAuthEntity {
     private String accessToken;
 
     @Column(name = "login_at")
-    @NotNull
-    private Timestamp loginAt;
+    private ZonedDateTime loginAt;
 
     @Column(name = "logout_at")
-    @NotNull
-    private Timestamp logoutAt;
+    private ZonedDateTime logoutAt;
 
     @Column(name = "expires_at")
-    @NotNull
-    private Timestamp expiresAt;
+    private ZonedDateTime expiresAt;
 
     public Long getId() {return id;}
 
@@ -65,15 +63,15 @@ public class CustomerAuthEntity {
 
     public void setAccessToken(String accessToken) {this.accessToken = accessToken;}
 
-    public Timestamp getLoginAt() {return loginAt;}
+    public ZonedDateTime getLoginAt() {return loginAt;}
 
-    public void setLoginAt(Timestamp loginAt) {this.loginAt = loginAt;}
+    public void setLoginAt(ZonedDateTime loginAt) {this.loginAt = loginAt;}
 
-    public Timestamp getLogoutAt() {return logoutAt;}
+    public ZonedDateTime getLogoutAt() {return logoutAt;}
 
-    public void setLogoutAt(Timestamp logoutAt) {this.logoutAt = logoutAt;}
+    public void setLogoutAt(ZonedDateTime logoutAt) {this.logoutAt = logoutAt;}
 
-    public Timestamp getExpiresAt() {return expiresAt;}
+    public ZonedDateTime getExpiresAt() {return expiresAt;}
 
-    public void setExpiresAt(Timestamp expiresAt) {this.expiresAt = expiresAt;}
+    public void setExpiresAt(ZonedDateTime expiresAt) {this.expiresAt = expiresAt;}
 }

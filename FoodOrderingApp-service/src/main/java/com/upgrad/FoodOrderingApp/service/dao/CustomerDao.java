@@ -1,5 +1,6 @@
 package com.upgrad.FoodOrderingApp.service.dao;
 
+import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import org.springframework.stereotype.Repository;
 
@@ -53,4 +54,16 @@ public class CustomerDao {
             return null;
         }
     }
+
+    public CustomerAuthEntity createAuthToken(final CustomerAuthEntity customerAuthEntity) {
+        entityManager.persist(customerAuthEntity);
+        return customerAuthEntity;
+    }
+
+    public void updateCustomer(final CustomerEntity updatedCustomerEntity) {
+        entityManager.merge(updatedCustomerEntity);
+    }
+
+
+
 }
