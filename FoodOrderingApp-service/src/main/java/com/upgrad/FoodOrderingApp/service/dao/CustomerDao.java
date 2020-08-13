@@ -64,6 +64,15 @@ public class CustomerDao {
         entityManager.merge(updatedCustomerEntity);
     }
 
+    public CustomerAuthEntity getCustomerByToken(final String accessToken) {
+        try {
+            return entityManager.createNamedQuery("customerAuthTokenByAccessToken", CustomerAuthEntity.class)
+                    .setParameter("accessToken", accessToken).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
 
 
 }

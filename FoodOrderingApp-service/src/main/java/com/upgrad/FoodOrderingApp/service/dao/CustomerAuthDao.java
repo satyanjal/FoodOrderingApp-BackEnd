@@ -25,4 +25,9 @@ public class CustomerAuthDao {
         entityManager.persist(customerAuthEntity);
         return customerAuthEntity;
     }
+
+    public CustomerAuthEntity customerLogout (CustomerAuthEntity customerAuthEntity){
+        entityManager.merge(customerAuthEntity);
+        return customerAuthEntity;
+    }
 }
