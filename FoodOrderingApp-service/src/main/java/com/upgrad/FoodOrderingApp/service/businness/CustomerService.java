@@ -141,9 +141,9 @@ public class CustomerService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAuthEntity logout(final String acessToken) throws AuthorizationFailedException {
+    public CustomerAuthEntity logout(final String accessToken) throws AuthorizationFailedException {
 
-        CustomerAuthEntity customerAuthEntity = validateBearerAuthentication(acessToken);
+        CustomerAuthEntity customerAuthEntity = validateBearerAuthentication(accessToken);
         customerAuthEntity.setExpiresAt(ZonedDateTime.now());
         customerAuthEntity.setLogoutAt(ZonedDateTime.now());
         customerDao.updateCustomerAuth(customerAuthEntity);
