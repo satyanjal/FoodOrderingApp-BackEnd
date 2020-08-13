@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
 public class CategoryController {
 
     //This controller class will implement the following 2 APIs.
