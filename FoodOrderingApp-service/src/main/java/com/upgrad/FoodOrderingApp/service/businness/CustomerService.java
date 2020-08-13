@@ -127,26 +127,26 @@ public class CustomerService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAuthEntity validateBearerAuthentication(final String accessToken)
-            throws AuthorizationFailedException {
+    public CustomerAuthEntity validateBearerAuthentication(final String accessToken) throws AuthorizationFailedException {
         CustomerAuthEntity customerAuthEntity = customerDao.getCustomerByToken(accessToken);
         if (customerAuthEntity == null) {
             throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in.");
         } else if (customerAuthEntity.getLogoutAt() != null) {
-            throw new AuthorizationFailedException("ATHR-002",
-                    "Customer is logged out. Log in again to access this endpoint.");
+            throw new AuthorizationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
         }
         if(ZonedDateTime.now().compareTo(customerAuthEntity.getExpiresAt()) >= 0){
-            throw new AuthorizationFailedException("ATHR-003",
-                    "Your session is expired. Log in again to access this endpoint.");
+            throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
         }
         return customerAuthEntity;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAuthEntity logout(final String acessToken)
-            throws AuthorizationFailedException {
+    public CustomerAuthEntity logout(final String acessToken) throws AuthorizationFailedException {
 
+        CustomerAuthEntity customerAuthEntity = validateBearerAuthentication(acessToken);
+        customerAuthEntity.setExpiresAt(ZonedDateTime.now());
+        customerAuthEntity.setLogoutAt(ZonedDateTime.now());
+        customerDao.updateCustomerAuth(customerAuthEntity);
+        return customerAuthEntity;
     }
-
 }
