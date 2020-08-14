@@ -9,7 +9,7 @@ import java.util.UUID;
 @Table(name = "category")
 @NamedQueries(
         {
-                //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
+                @NamedQuery(name = "categoryByUuid", query = "select c from CategoryEntity c where c.uuid = :uuid")
         }
 )
 
