@@ -158,4 +158,10 @@ public class CustomerService {
         CustomerEntity customer = customerAuthEntity.getCustomer();
         return customer;
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity updateCustomer(CustomerEntity customer) {
+        customerDao.updateCustomer(customer);
+        return customer;
+    }
 }

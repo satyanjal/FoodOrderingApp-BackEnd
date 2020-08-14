@@ -7,6 +7,7 @@ import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AuthenticationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.SignUpRestrictedException;
+import com.upgrad.FoodOrderingApp.service.exception.UpdateCustomerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -87,9 +88,12 @@ public class CustomerController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path="/customer",produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE )
-    public ResponseEntity<UpdateCustomerResponse> update(@RequestHeader("authorization") final String authorization)
-            throws AuthorizationFailedException{
+    public ResponseEntity<UpdateCustomerResponse> update(@RequestHeader("authorization") final String authorization, @RequestBody final UpdateCustomerRequest updateCustomerRequest)
+            throws AuthorizationFailedException, UpdateCustomerException {
 
-        
+        CustomerEntity customer = customerService.getCustomer(authorization);
+        customer.setFirstName(updateCustomerRequest.getFirstName());
+        customer.setLastName(updateCustomerRequest.getLastName());
+
     }
 }
