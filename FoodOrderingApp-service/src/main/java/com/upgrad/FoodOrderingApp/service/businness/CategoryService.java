@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CategoryService {
@@ -18,7 +19,13 @@ public class CategoryService {
         return categoryDao.getAllCategories();
     }
 
-   /* public CategoryEntity getCategoryById() throws CategoryNotFoundException {
+   public CategoryEntity getCategoryById(UUID categoryUuid) throws CategoryNotFoundException {
 
-    }*/
+       if(categoryUuid.equals(null)){
+           throw new CategoryNotFoundException("CNF-001","Category id field should not be empty");
+       }
+
+        return categoryDao.getCategoryById(categoryUuid);
+
+    }
 }
