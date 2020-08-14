@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.CategoriesListResponse;
+import com.upgrad.FoodOrderingApp.api.model.CategoryDetailsResponse;
 import com.upgrad.FoodOrderingApp.api.model.CategoryListResponse;
 import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
@@ -9,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -40,7 +43,7 @@ public class CategoryController {
         CategoriesListResponse categoriesListResponse = new CategoriesListResponse();
         for (CategoryEntity category:categories) {
             CategoryListResponse response = new CategoryListResponse();
-            response.setId(category.getUuid());
+            response.setId(UUID.fromString(category.getUuid()));
             response.setCategoryName(category.getCategoryName());
             categoriesListResponse.addCategoriesItem(response);
         }
@@ -69,8 +72,18 @@ public class CategoryController {
             it should retrieve that category with all items within that category and
             then display the response in a JSON format with the corresponding HTTP status.
     */
-    /*@RequestMapping(method = RequestMethod.GET, path = "/category/{category_id}")
-    public getCategoryById(UUID CategoryUuid) throws CategoryNotFoundException {
-        return categoryService.getCategoryById(CategoryUuid);
-    }*/
+    @RequestMapping(method = RequestMethod.GET, path = "/category/{category_id}")
+    public ResponseEntity<CategoryDetailsResponse> getCategoryById(@PathVariable(value = "category_id", required = false) UUID CategoryUuid) throws CategoryNotFoundException {
+        CategoryDetailsResponse categoryDetailsResponse = new CategoryDetailsResponse();
+        CategoryEntity categoryEntity = categoryService.getCategoryById(CategoryUuid);
+
+        System.out.println(categoryEntity.getCategoryName());
+        System.out.println(categoryEntity.getUuid());
+
+        categoryDetailsResponse.setCategoryName(categoryEntity.getCategoryName());
+        categoryDetailsResponse.setId(UUID.fromString(categoryEntity.getUuid()));
+
+
+        return new ResponseEntity<CategoryDetailsResponse>(categoryDetailsResponse, HttpStatus.OK);
+    }
 }

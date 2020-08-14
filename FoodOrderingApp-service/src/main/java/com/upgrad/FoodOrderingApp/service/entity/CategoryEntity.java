@@ -9,7 +9,8 @@ import java.util.UUID;
 @Table(name = "category")
 @NamedQueries(
         {
-                @NamedQuery(name = "categoryByUuid", query = "select c from CategoryEntity c where c.uuid = :uuid")
+                @NamedQuery(name = "categoryByUuid", query = "select c from CategoryEntity c where c.uuid = :CategoryUuidNq")
+
         }
 )
 
@@ -24,7 +25,7 @@ public class CategoryEntity {
     @Column(name = "uuid", unique = true)
     @Size(max = 200)
     @NotNull
-    private UUID uuid;
+    private String uuid;
 
     @Column(name = "category_name")
     @Size(max = 30)
@@ -35,9 +36,9 @@ public class CategoryEntity {
 
     public void setId(Long id) {this.id = id;}
 
-    public UUID getUuid() {return uuid;}
+    public String getUuid() {return uuid;}
 
-    public void setUuid(UUID uuid) {this.uuid = uuid;}
+    public void setUuid(String uuid) {this.uuid = uuid;}
 
     public String getCategoryName() {return categoryName;}
 
