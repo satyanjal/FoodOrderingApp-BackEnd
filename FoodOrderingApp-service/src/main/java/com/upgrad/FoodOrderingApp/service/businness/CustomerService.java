@@ -149,4 +149,13 @@ public class CustomerService {
         customerDao.updateCustomerAuth(customerAuthEntity);
         return customerAuthEntity;
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity getCustomer(final String accessToken)
+            throws AuthorizationFailedException {
+
+        CustomerAuthEntity customerAuthEntity = validateBearerAuthentication(accessToken);
+        CustomerEntity customer = customerAuthEntity.getCustomer();
+        return customer;
+    }
 }

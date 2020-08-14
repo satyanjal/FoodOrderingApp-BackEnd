@@ -87,7 +87,9 @@ public class CustomerController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path="/customer",produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE )
-    public ResponseEntity<UpdateCustomerResponse> update(){
+    public ResponseEntity<UpdateCustomerResponse> update(@RequestHeader("authorization") final String authorization)
+            throws AuthorizationFailedException{
 
+        
     }
 }
