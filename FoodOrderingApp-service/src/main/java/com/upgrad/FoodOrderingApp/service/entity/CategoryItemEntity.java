@@ -8,7 +8,7 @@ import java.util.Locale;
 @Table(name = "category_item")
 @NamedQueries(
         {
-                //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
+               // @NamedQuery(name = "categoryItemByUuid", query = "select c from CategoryItemEntity c where c.uuid = :uuid")
         }
 )
 
