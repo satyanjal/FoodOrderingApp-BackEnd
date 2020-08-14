@@ -50,7 +50,7 @@ public class CustomerController {
     public ResponseEntity<LoginResponse> login(@RequestHeader("authorization") final String authorization)
             throws AuthenticationFailedException {
 
-//        System.out.println(authorization);
+//      System.out.println(authorization);
         String encodedText = authorization.split("Basic ")[1];
 
         byte[] decode = Base64.getDecoder().decode(encodedText);
@@ -94,6 +94,13 @@ public class CustomerController {
         CustomerEntity customer = customerService.getCustomer(authorization);
         customer.setFirstName(updateCustomerRequest.getFirstName());
         customer.setLastName(updateCustomerRequest.getLastName());
+        customerService.updateCustomer(customer);
 
+        UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse().id(customer.getUuid()).firstName(customer.getFirstName())
+                .lastName(customer.getLastName()).status("CUSTOMER DETAILS UPDATED SUCCESSFULLY");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("access-token", authorization);
+        return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse, headers, HttpStatus.OK);
     }
 }
