@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.temporal.ChronoField;
-import java.util.Date;
+
 import java.util.UUID;
 import java.time.ZonedDateTime;
 import java.util.regex.Pattern;
@@ -27,6 +26,7 @@ public class CustomerService {
     @Autowired
     private PasswordCryptographyProvider passwordCryptographyProvider;
 
+    //Checks if the email format is valid
     private boolean ValidEmail(String email) {
         String emailRegex = "^[A-Z0-9_.]+@[A-Z0-9_.]+\\.[A-Z0-9]{2,7}$";
 
@@ -36,6 +36,7 @@ public class CustomerService {
         return pat.matcher(email).matches();
     }
 
+    //Checks if the contactnumber format is valid
     private boolean ValidContactNumber(String contactNumber) {
         String contactNUmberRegex = "\\d{10}";
 
@@ -45,6 +46,7 @@ public class CustomerService {
         return pat.matcher(contactNumber).matches();
     }
 
+    //Checks if the password entered is weak
     private boolean WeakPassword(String password) {
 
         String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#@$%&*!^]).{8,}$";
@@ -55,6 +57,7 @@ public class CustomerService {
         return pat.matcher(password).matches();
     }
 
+    // Create new customer in the database
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity signup(CustomerEntity customerEntity) throws SignUpRestrictedException {
 
@@ -93,6 +96,7 @@ public class CustomerService {
         return customerDao.createCustomer(customerEntity);
     }
 
+    //Authenticate customers and generate access token for valid requests
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerAuthEntity authenticate(final String contactNumber, final String password)
             throws AuthenticationFailedException {
@@ -127,8 +131,9 @@ public class CustomerService {
         }
     }
 
+    // validation of authentication token and return authentication entity
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAuthEntity validateBearerAuthentication(final String accessToken) throws AuthorizationFailedException {
+    public CustomerAuthEntity validateAccessToken(final String accessToken) throws AuthorizationFailedException {
 
         CustomerAuthEntity customerAuthEntity = customerDao.getCustomerByToken(accessToken);
         if (customerAuthEntity == null) {
@@ -142,31 +147,34 @@ public class CustomerService {
         return customerAuthEntity;
     }
 
+    // Handle logout requests
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerAuthEntity logout(final String accessToken) throws AuthorizationFailedException {
 
-        CustomerAuthEntity customerAuthEntity = validateBearerAuthentication(accessToken);
+        CustomerAuthEntity customerAuthEntity = validateAccessToken(accessToken);
         customerAuthEntity.setExpiresAt(ZonedDateTime.now());
         customerAuthEntity.setLogoutAt(ZonedDateTime.now());
         customerDao.updateCustomerAuth(customerAuthEntity);
         return customerAuthEntity;
     }
 
+    // Return customer entity for a given access token
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity getCustomer(final String accessToken)
             throws AuthorizationFailedException {
 
-        CustomerAuthEntity customerAuthEntity = validateBearerAuthentication(accessToken);
-        CustomerEntity customer = customerAuthEntity.getCustomer();
-        return customer;
+        CustomerAuthEntity customerAuthEntity = validateAccessToken(accessToken);
+        return customerAuthEntity.getCustomer();
     }
 
+    // Return customer entity after updation
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity updateCustomer(CustomerEntity customer) {
         customerDao.updateCustomer(customer);
         return customer;
     }
 
+    // Update password for the user
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity updateCustomerPassword(final String oldPassword, final String newPassword, CustomerEntity customer)
             throws UpdateCustomerException {
