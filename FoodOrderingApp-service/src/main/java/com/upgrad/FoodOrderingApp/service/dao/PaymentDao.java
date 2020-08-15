@@ -24,7 +24,7 @@ public class PaymentDao {
 
     public PaymentEntity getMethodbyId(final String uuid){
         try{
-            return entityManager.createNamedQuery("getMethodbyId", PaymentEntity.class).setParameter("paymentUUID", uuid).getSingleResult();
+            return entityManager.createNamedQuery("getMethodbyUUID", PaymentEntity.class).setParameter("paymentUUID", uuid).getSingleResult();
         }catch(NoResultException nre){
             return null;
         }

@@ -5,12 +5,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "payment", schema = "public")
 @NamedQueries(
         {
                 //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
                 @NamedQuery(name = "allPaymentMethods", query = "select p from PaymentEntity p"),
-                @NamedQuery(name = "paymentByUUID", query = "select p from PaymentEntity p where p.uuid = :paymentUUID")
+                @NamedQuery(name = "getMethodbyUUID", query = "select p from PaymentEntity p where p.uuid = :paymentUUID")
         }
 )
 
