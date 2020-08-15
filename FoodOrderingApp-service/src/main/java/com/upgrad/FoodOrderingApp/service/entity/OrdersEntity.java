@@ -9,7 +9,8 @@ import java.util.Date;
 @Table(name = "orders")
 @NamedQueries(
         {
-                //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
+                @NamedQuery(name = "ordersByCustomerId", query = "select  o from OrdersEntity o where o.customer.uuid = :customerUuidNq order by o.date desc")
+
         }
 )
 
