@@ -53,8 +53,8 @@ public class CustomerService {
 
         Pattern pat = Pattern.compile(passwordRegex);
         if (password == null)
-            return false;
-        return pat.matcher(password).matches();
+            return true;
+        return !pat.matcher(password).matches();
     }
 
     // Create new customer in the database
@@ -75,11 +75,11 @@ public class CustomerService {
             throw new SignUpRestrictedException("SGR-003", "Invalid contact number!");
         }
 
-        if(!WeakPassword(customerEntity.getPassword())){
+        if(WeakPassword(customerEntity.getPassword())){
             throw new SignUpRestrictedException("SGR-004", "Weak password!");
         }
 
-        if (customerEntity == null || customerEntity.getFirstName() == null
+        if (customerEntity.getFirstName() == null
                 || customerEntity.getContactNumber() == null
                 || customerEntity.getEmail() == null
                 || customerEntity.getPassword() == null
@@ -169,9 +169,8 @@ public class CustomerService {
 
     // Return customer entity after updation
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerEntity updateCustomer(CustomerEntity customer) {
+    public void updateCustomer(CustomerEntity customer) {
         customerDao.updateCustomer(customer);
-        return customer;
     }
 
     // Update password for the user
@@ -179,7 +178,7 @@ public class CustomerService {
     public CustomerEntity updateCustomerPassword(final String oldPassword, final String newPassword, CustomerEntity customer)
             throws UpdateCustomerException {
 
-        if(!WeakPassword(newPassword)){
+        if(WeakPassword(newPassword)){
             throw new UpdateCustomerException("UCR-001", "Weak password!");
         }
 
