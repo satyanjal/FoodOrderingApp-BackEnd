@@ -77,11 +77,11 @@ public class CustomerController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/customer/logout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<LogoutResponse> logout(@RequestHeader("authorization") final String bearerAccessToken)
+    public ResponseEntity<LogoutResponse> logout(@RequestHeader("access-token") final String accessToken)
             throws AuthorizationFailedException {
 
         CustomerAuthEntity customerAuthEntity;
-        customerAuthEntity = customerService.logout(bearerAccessToken);
+        customerAuthEntity = customerService.logout(accessToken);
         LogoutResponse logoutResponse =
                 new LogoutResponse().id(customerAuthEntity.getUuid()).message("LOGGED OUT SUCCESSFULLY");
         return new ResponseEntity<LogoutResponse>(logoutResponse, HttpStatus.OK);
@@ -91,14 +91,15 @@ public class CustomerController {
     public ResponseEntity<UpdateCustomerResponse> update(@RequestHeader("authorization") final String bearerAccessToken, @RequestBody final UpdateCustomerRequest updateCustomerRequest)
             throws AuthorizationFailedException, UpdateCustomerException {
 
+
         if (updateCustomerRequest.getFirstName() == null || updateCustomerRequest.getFirstName().trim()
                 .isEmpty()) {
             throw new UpdateCustomerException("UCR-002", "First name field should not be empty");
         }
 
+        String accessToken = bearerAccessToken.split("Bearer ")[1];
 //        String authorization = token.split("Bearer ")[1];
-        CustomerAuthEntity customerAuthEntity = customerService.validateBearerAuthentication(bearerAccessToken);
-        String accessToken = customerAuthEntity.getAccessToken();
+        customerService.validateBearerAuthentication(accessToken);
         CustomerEntity customer = customerService.getCustomer(accessToken);
         customer.setFirstName(updateCustomerRequest.getFirstName());
         customer.setLastName(updateCustomerRequest.getLastName());
@@ -112,11 +113,11 @@ public class CustomerController {
         return new ResponseEntity<UpdateCustomerResponse>(updateCustomerResponse, headers, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, path = "/customer/password", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<UpdatePasswordResponse> updateCustomerPassword
-            (@RequestHeader("authorization") final String bearerAccessToken, @RequestBody UpdatePasswordRequest updatePasswordRequest)
-            throws UpdateCustomerException, AuthorizationFailedException {
-
+//    @RequestMapping(method = RequestMethod.PUT, path = "/customer/password", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public ResponseEntity<UpdatePasswordResponse> updateCustomerPassword
+//            (@RequestHeader("authorization") final String bearerAccessToken, @RequestBody UpdatePasswordRequest updatePasswordRequest)
+//            throws UpdateCustomerException, AuthorizationFailedException {
+//
 //        CustomerAuthEntity customerAuthEntity = customerService.validateBearerAuthentication(bearerAccessToken);
 //        String accessToken = customerAuthEntity.getAccessToken();
 //
@@ -124,6 +125,7 @@ public class CustomerController {
 //                || updatePasswordRequest.getNewPassword() == null || updatePasswordRequest.getNewPassword().isEmpty()) {
 //            throw new UpdateCustomerException("UCR-003", "No field should be empty");
 //        }
-
-    }
+//
+//
+//    }
 }

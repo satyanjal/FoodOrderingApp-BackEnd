@@ -128,8 +128,8 @@ public class CustomerService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerAuthEntity validateBearerAuthentication(final String bearerAccessToken) throws AuthorizationFailedException {
-        String accessToken = bearerAccessToken.split("Bearer ")[1];
+    public CustomerAuthEntity validateBearerAuthentication(final String accessToken) throws AuthorizationFailedException {
+
         CustomerAuthEntity customerAuthEntity = customerDao.getCustomerByToken(accessToken);
         if (customerAuthEntity == null) {
             throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in.");
