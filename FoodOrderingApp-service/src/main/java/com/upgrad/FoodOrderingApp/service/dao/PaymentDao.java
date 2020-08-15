@@ -14,6 +14,11 @@ public class PaymentDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     *
+     * @return List of all payment methods
+     */
+
     public List<PaymentEntity> getAllPaymentMethods(){
         try{
             return this.entityManager.createNamedQuery("allPaymentMethods", PaymentEntity.class).getResultList();
@@ -21,6 +26,12 @@ public class PaymentDao {
             return null;
         }
     }
+
+    /**
+     *
+     * @param uuid
+     * @return Returns a payment method by its ID
+     */
 
     public PaymentEntity getMethodbyId(final String uuid){
         try{
