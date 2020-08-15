@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 @NamedQueries(
         {
                 //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
+
         }
 )
 
