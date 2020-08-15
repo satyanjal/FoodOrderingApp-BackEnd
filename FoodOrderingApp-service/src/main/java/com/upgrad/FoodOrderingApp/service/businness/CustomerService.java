@@ -59,7 +59,7 @@ public class CustomerService {
 
     // Create new customer in the database
     @Transactional(propagation = Propagation.REQUIRED)
-    public CustomerEntity signup(CustomerEntity customerEntity) throws SignUpRestrictedException {
+    public CustomerEntity saveCustomer(CustomerEntity customerEntity) throws SignUpRestrictedException {
 
         CustomerEntity existingUser1 = customerDao.getCustomerByContactNumber(customerEntity.getContactNumber());
 
@@ -169,8 +169,9 @@ public class CustomerService {
 
     // Return customer entity after updation
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateCustomer(CustomerEntity customer) {
+    public CustomerEntity updateCustomer(CustomerEntity customer) {
         customerDao.updateCustomer(customer);
+        return customer;
     }
 
     // Update password for the user
