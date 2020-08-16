@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.DeleteAddressResponse;
+import com.upgrad.FoodOrderingApp.api.model.ItemList;
 import com.upgrad.FoodOrderingApp.api.model.ItemListResponse;
 import com.upgrad.FoodOrderingApp.service.businness.ItemService;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
@@ -31,6 +32,18 @@ public class ItemController {
         final List<ItemEntity> itemEntities = itemService.getFivePopularItems(restaurantUuid, authorization);
 
         ItemListResponse itemListResponse = new ItemListResponse();
+        for (ItemEntity itemEntity : itemEntities) {
+            ItemList itemList = new ItemList();
+            itemList.setId(UUID.fromString(itemEntity.getUuid()));
+            itemList.setItemName(itemEntity.getItemName());
+            if (itemEntity.getType().equals("1")) {
+                itemList.setItemType(ItemList.ItemTypeEnum.VEG);
+            } else {
+                itemList.setItemType(ItemList.ItemTypeEnum.NON_VEG);
+            }
+            itemList.setPrice(itemEntity.getPrice());
+            itemListResponse.add(itemList);
+        }
 
         return new ResponseEntity<ItemListResponse>(itemListResponse, HttpStatus.OK);
     }

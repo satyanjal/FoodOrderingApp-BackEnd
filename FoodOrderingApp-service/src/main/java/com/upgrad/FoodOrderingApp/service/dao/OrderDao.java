@@ -22,7 +22,6 @@ public class OrderDao {
         } catch (NoResultException nre) {
             return null;
         }
-
     }
 
     public List<OrderItemEntity> getOrderItemsByOrderId(Long orderId){
@@ -33,7 +32,6 @@ public class OrderDao {
         } catch (NoResultException nre) {
             return null;
         }
-
     }
 
     public List<OrdersEntity> getOrdersByCustomerId(String customerUuid){
@@ -44,6 +42,13 @@ public class OrderDao {
         } catch (NoResultException nre) {
             return null;
         }
-
     }
+
+    public List<OrdersEntity> getOrdersByRestaurantId(Long restaurantid){
+        try {
+            return entityManager.createNamedQuery("ordersByRestaurantId", OrdersEntity.class).
+                    setParameter("restaurant_id", restaurantid).getResultList();
+        } catch (NoResultException nre) {return null;}
+    }
+
 }
