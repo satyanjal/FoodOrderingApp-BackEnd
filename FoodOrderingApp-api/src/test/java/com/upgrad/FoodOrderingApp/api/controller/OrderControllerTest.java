@@ -80,8 +80,8 @@ public class OrderControllerTest {
         final String orderId = UUID.randomUUID().toString();
         OrderItemEntity orderItemEntity = new OrderItemEntity();
         orderEntity.setUuid(orderId);
-        when(mockOrderService.saveOrder(any()).thenReturn(orderEntity));
-        when(mockOrderService.saveOrder(any())).thenReturn(orderItemEntity);
+        when(mockOrderService.saveOrder(any(), any(), any(), any(), any(), any(), any()).thenReturn(orderEntity));
+        when(mockOrderService.saveOrder(any(), any(), any(), any(), any(), any(), any()).thenReturn(orderItemEntity));
 
         mockMvc
                 .perform(post("/order")
@@ -140,9 +140,9 @@ public class OrderControllerTest {
         verify(mockPaymentService, times(0)).getPaymentByUUID(anyString());
         verify(mockAddressService, times(0)).getAddressByUUID(anyString(), any());
         verify(mockRestaurantService, times(0)).restaurantByUUID(anyString());
-        verify(mockOrderService, times(0)).getCouponByName(anyString());
-        verify(mockOrderService, times(0)).saveOrder(any());
-        verify(mockOrderService, times(0)).saveOrder(any());
+        verify(mockOrderService, times(0)).getCouponByName(anyString(), anyString());
+        verify(mockOrderService, times(0)).saveOrder((any(), any(), any(), any(), any(), any(), any()));
+        verify(mockOrderService, times(0)).saveOrder((any(), any(), any(), any(), any(), any(), any()));
     }
 
     //This test case passes when you have handled the exception of trying to save an order while your session is
