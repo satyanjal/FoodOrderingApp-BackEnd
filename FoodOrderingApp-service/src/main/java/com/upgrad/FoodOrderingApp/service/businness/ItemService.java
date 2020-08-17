@@ -53,7 +53,7 @@ public class ItemService {
         }
 
         List<ItemEntity> itemEntities = new ArrayList<>();
-        List<Long> singleItemsIds = removeDuplicateElements(itemIds, itemIds.size());
+        List<Long> singleItemsIds = getItems(itemIds, itemIds.size());
 
         for (int i=0;i<5;i++) {
             itemEntities.add(itemDao.getItemById(singleItemsIds.get(i).intValue()));
@@ -61,7 +61,7 @@ public class ItemService {
         return itemEntities;
     }
 
-    private static List<Long> removeDuplicateElements(List<Long> arr, int n){
+    private static List<Long> getItems(List<Long> arr, int n){
         List<Long> temp = new ArrayList<>();
         int j = 0;
         for (int i=0; i<n-1; i++){

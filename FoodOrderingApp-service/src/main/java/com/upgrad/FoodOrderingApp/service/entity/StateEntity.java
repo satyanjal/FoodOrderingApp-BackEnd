@@ -28,6 +28,10 @@ public class StateEntity {
     @Size(max = 30)
     private String stateName;
 
+    public StateEntity(String stateUuid, String stateName) {
+
+    }
+
     public Long getId() {return id;}
 
     public void setId(Long id) {this.id = id;}

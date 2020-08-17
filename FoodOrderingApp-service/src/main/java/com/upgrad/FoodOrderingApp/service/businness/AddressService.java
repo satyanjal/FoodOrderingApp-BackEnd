@@ -5,6 +5,7 @@ import com.upgrad.FoodOrderingApp.service.dao.CustomerAuthDao;
 import com.upgrad.FoodOrderingApp.service.dao.StateDao;
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
+import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
@@ -54,7 +55,7 @@ public class AddressService {
             throw new SaveAddressException("SAR-002", "Invalid pincode");
         }
 
-        StateEntity stateEntity = stateDao.getStateByUuid(stateUuid);
+        StateEntity stateEntity = getStateByUUID(stateUuid);
         if (stateEntity == null) {
             throw new SaveAddressException("ANF-002", "No state by this id");
         } else {
@@ -79,7 +80,7 @@ public class AddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void deleteAddress(String addressUuid, final String authorizationToken)
+    public void removeAddress(String addressUuid, final String authorizationToken)
             throws AuthorizationFailedException, AddressNotFoundException {
         CustomerAuthEntity customerAuthEntity = customerAuthDao.getCustomerAuthByAccessToken(authorizationToken);
         if (customerAuthEntity == null) {
@@ -94,13 +95,29 @@ public class AddressService {
             throw new AddressNotFoundException("ANF-005", "Address id can not be empty");
         }
 
-        AddressEntity addressEntity = addressDao.getAddressByUuid(addressUuid);
+        AddressEntity addressEntity = getAddressByUUID(addressUuid);
         if (addressEntity == null) {
             throw new AddressNotFoundException("ANF-003", "No address by this id");
         }
 
         // Throw exception for OWNer of address
+        deleteAddress(addressEntity);
+    }
 
-        addressDao.deleteAddress(addressEntity);
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<StateEntity> getAllStates() {
+        return stateDao.getAllStates();
+    }
+
+    public StateEntity getStateByUUID(String stateUuid) {
+        return stateDao.getStateByUuid(stateUuid);
+    }
+
+    public AddressEntity getAddressByUUID(String addressUuid) {
+        return addressDao.getAddressByUuid(addressUuid);
+    }
+
+    public AddressEntity deleteAddress(AddressEntity addressEntity) {
+        return addressDao.deleteAddress(addressEntity);
     }
 }
