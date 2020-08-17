@@ -1,4 +1,4 @@
-package com.upgrad.FoodOrderingApp.service.businness;
+/*package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.common.UtilityProvider;
 import com.upgrad.FoodOrderingApp.service.dao.CategoryDao;
@@ -41,6 +41,7 @@ public class RestaurantService {
     /* This method is to get restaurants By Rating and returns list of RestaurantEntity
     If error throws exception with error code and error message.
     */
+/*
     public List<RestaurantEntity> restaurantsByRating(){
 
         //Calls restaurantsByRating of restaurantDao to get list of RestaurantEntity
@@ -51,6 +52,7 @@ public class RestaurantService {
     /* This method is to get restaurants By Name and returns list of RestaurantEntity. its takes restaurant name as the input string.
     If error throws exception with error code and error message.
     */
+    /*
     public List<RestaurantEntity> restaurantsByName(String restaurantName)throws RestaurantNotFoundException{
         if(restaurantName == null || restaurantName ==""){ //Checking for restaunrant name to be null or empty to throw exception.
             throw new RestaurantNotFoundException("RNF-003","Restaurant name field should not be empty");
@@ -65,6 +67,7 @@ public class RestaurantService {
     /* This method is to get restaurant By Category and returns list of RestaurantEntity. its takes categoryId as the input string.
      If error throws exception with error code and error message.
      */
+    /*
     public List<RestaurantEntity> restaurantByCategory(String categoryId) throws CategoryNotFoundException {
 
         if(categoryId == null || categoryId == ""){ //Checking for categoryId to be null or empty to throw exception.
@@ -93,6 +96,7 @@ public class RestaurantService {
     /* This method is to get restaurant By UUID and returns RestaurantEntity. its takes restaurantUuid as the input string.
      If error throws exception with error code and error message.
      */
+    /*
     public RestaurantEntity restaurantByUUID(String restaurantUuid)throws RestaurantNotFoundException{
         if(restaurantUuid == null||restaurantUuid == ""){ //Checking for restaurantUuid to be null or empty to throw exception.
             throw new RestaurantNotFoundException("RNF-002","Restaurant id field should not be empty");
@@ -113,6 +117,7 @@ public class RestaurantService {
     /* This method is to update Restaurant Rating and returns updated RestaurantEntity. its takes restaurantEntity and customerRating as the input.
    If error throws exception with error code and error message.
    */
+    /*
     @Transactional(propagation = Propagation.REQUIRED)
     public RestaurantEntity updateRestaurantRating(RestaurantEntity restaurantEntity, Double customerRating) throws InvalidRatingException {
         if(!utilityProvider.isValidCustomerRating(customerRating.toString())){ //Checking for the rating to be valid
@@ -137,3 +142,4 @@ public class RestaurantService {
     }
 }
 
+*/

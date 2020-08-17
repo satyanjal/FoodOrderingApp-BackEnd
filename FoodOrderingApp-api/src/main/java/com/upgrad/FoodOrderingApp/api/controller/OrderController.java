@@ -8,10 +8,7 @@ import com.upgrad.FoodOrderingApp.service.exception.CouponNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +21,10 @@ public class OrderController {
     OrderService orderService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/order/coupon/{coupon_name}")
-    public ResponseEntity<CouponDetailsResponse> getCouponByName(@PathVariable(value = "coupon_name", required = false) String couponName)
+    public ResponseEntity<CouponDetailsResponse> getCouponByName(@PathVariable(value = "coupon_name", required = false) String couponName, @RequestHeader("authorization") final String authorization)
     throws AuthorizationFailedException, CouponNotFoundException {
 
-        CouponEntity couponEntity = orderService.getCouponByName(couponName);
+        CouponEntity couponEntity = orderService.getCouponByName(couponName, authorization);
         CouponDetailsResponse couponDetailsResponse = new CouponDetailsResponse();
         couponDetailsResponse.setCouponName(couponEntity.getCouponName());
         couponDetailsResponse.setId(UUID.fromString(couponEntity.getUuid()));
@@ -36,11 +33,13 @@ public class OrderController {
         return new ResponseEntity<CouponDetailsResponse>(couponDetailsResponse,HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/order/{customer_id}")
-    public  ResponseEntity<List<OrderList>> getOrderItemsByCustomerId(@PathVariable("customer_id") String customerId)
+    @RequestMapping(method = RequestMethod.GET, path = "/order")
+    public  ResponseEntity<List<OrderList>> getOrderItemsByCustomerId(@RequestHeader("authorization") final String authorization)
     throws AuthorizationFailedException {
 
-        List<OrdersEntity> ordersEntities = orderService.getOrdersByCustomerId(customerId);
+        //@PathVariable("customer_id") String customerId
+
+        List<OrdersEntity> ordersEntities = orderService.getOrdersByCustomerId(authorization);
 
         /*if(orderItemEntities.isEmpty())
             return;*/
