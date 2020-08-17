@@ -2,7 +2,6 @@ package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.AddressService;
-import com.upgrad.FoodOrderingApp.service.businness.StateService;
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
 import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
@@ -23,11 +22,8 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
 
-    @Autowired
-    private StateService stateService;
-
     @RequestMapping(method = RequestMethod.POST, path = "/address", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<SaveAddressResponse> createAddress(final SaveAddressRequest saveAddressRequest,
+    public ResponseEntity<SaveAddressResponse> saveAddress(final SaveAddressRequest saveAddressRequest,
                                                            @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException, SaveAddressException {
 
         AddressEntity addressEntity = new AddressEntity();
@@ -55,7 +51,7 @@ public class AddressController {
             addressList.setFlatBuildingName(addressEntity.getFlatBuilNumber());
             addressList.setLocality(addressEntity.getLocality());
             addressList.setPincode(addressEntity.getPincode());
-            addressList.setId(UUID.fromString(addressEntity.getUuid()));
+            addressList.setId(UUID.fromString(addressEntity.getStateByUUID()));
 
             AddressListState addressListState = new AddressListState();
             addressListState.setId(UUID.fromString(addressEntity.getState().getUuid()));
@@ -70,15 +66,15 @@ public class AddressController {
     public ResponseEntity<DeleteAddressResponse> deleteAddress(@PathVariable("address_id") final String addressUuid,
                                                                  @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException, AddressNotFoundException {
 
-        addressService.deleteAddress(addressUuid, authorization);
+        addressService.removeAddress(addressUuid, authorization);
         DeleteAddressResponse deleteAddressResponse = new DeleteAddressResponse().id(UUID.fromString(addressUuid)).status("ADDRESS DELETED SUCCESSFULLY");
         return new ResponseEntity<DeleteAddressResponse>(deleteAddressResponse, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/states", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<StatesListResponse> getAllStates(@RequestHeader("authorization") final String authorization) throws AuthorizationFailedException {
+    public ResponseEntity<StatesListResponse> getAllStates()  {
 
-        final List<StateEntity> allStates = stateService.getAllStates(authorization);
+        final List<StateEntity> allStates = addressService.getAllStates();
 
         StatesListResponse statesListResponse = new StatesListResponse();
         for (StateEntity stateEntity : allStates) {

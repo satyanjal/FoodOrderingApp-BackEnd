@@ -32,7 +32,8 @@ public class AddressDao {
         } catch (NoResultException nre) {return null;}
     }
 
-    public void deleteAddress(AddressEntity addressEntity) {
+    public AddressEntity deleteAddress(AddressEntity addressEntity) {
         entityManager.remove(addressEntity);
+        return addressEntity;
     }
 }

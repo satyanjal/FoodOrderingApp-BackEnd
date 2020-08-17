@@ -56,7 +56,7 @@ public class OrderController {
             serviceAddress = ordersEntity.getAddress();
             responseAddress.setCity(serviceAddress.getCity());
             responseAddress.setFlatBuildingName(serviceAddress.getFlatBuilNumber());
-            responseAddress.setId(UUID.fromString(serviceAddress.getUuid()));
+            responseAddress.setId(UUID.fromString(serviceAddress.getStateByUUID()));
             responseAddress.setLocality(serviceAddress.getLocality());
             responseAddress.setPincode(serviceAddress.getPincode());
             OrderListAddressState responseState = new OrderListAddressState();
