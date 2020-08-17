@@ -6,6 +6,8 @@ import com.upgrad.FoodOrderingApp.service.entity.CategoryItemEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,10 +17,12 @@ public class CategoryService {
     @Autowired
     private CategoryDao categoryDao;
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<CategoryEntity> getAllCategories(){
         return categoryDao.getAllCategories();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<CategoryItemEntity> getCategoryItemsById(String categoryUuid) throws CategoryNotFoundException {
 
         if(categoryUuid == null){

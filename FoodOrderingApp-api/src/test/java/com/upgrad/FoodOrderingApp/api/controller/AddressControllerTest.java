@@ -56,7 +56,7 @@ public class AddressControllerTest {
     @Test
     public void shouldSaveAddress() throws Exception {
         when(mockCustomerService.getCustomer("database_accesstoken2")).thenReturn(new CustomerEntity());
-        when(mockAddressService.getStateByUUID("testUUID")).thenReturn(new StateEntity("", ""));
+        when(mockAddressService.getStateByUUID("testUUID")).thenReturn(new StateEntity());
 
         final AddressEntity addressEntity = new AddressEntity();
         addressEntity.setUuid("randomUuid001");
@@ -149,7 +149,7 @@ public class AddressControllerTest {
     @Test
     public void shouldNotSaveAddressWithEmptyAddressField() throws Exception {
         when(mockCustomerService.getCustomer("database_accesstoken2")).thenReturn(new CustomerEntity());
-        when(mockAddressService.getStateByUUID("testUUID")).thenReturn(new StateEntity("", ""));
+        when(mockAddressService.getStateByUUID("testUUID")).thenReturn(new StateEntity());
         when(mockAddressService.createAddress(any(), any(), any())).thenThrow(new SaveAddressException("SAR-001", "No field can be empty"));
 
         mockMvc
@@ -168,7 +168,7 @@ public class AddressControllerTest {
     @Test
     public void shouldNotSaveAddressWithEmptyWrongPinCode() throws Exception {
         when(mockCustomerService.getCustomer("database_accesstoken2")).thenReturn(new CustomerEntity());
-        when(mockAddressService.getStateByUUID("testUUID")).thenReturn(new StateEntity("", ""));
+        when(mockAddressService.getStateByUUID("testUUID")).thenReturn(new StateEntity());
         when(mockAddressService.createAddress(any(), any(), any())).thenThrow(new SaveAddressException("SAR-002", "Invalid pincode"));
 
         mockMvc
@@ -322,8 +322,11 @@ public class AddressControllerTest {
         addressEntity.setLocality("locality");
         addressEntity.setFlatBuilNumber("flatBuildNo");
         final String stateUuid = UUID.randomUUID().toString();
-        addressEntity.setState(new StateEntity(stateUuid, "state"));
-        when(mockAddressService.getAllAddresses("\"database_accesstoken2")).thenReturn(Collections.singletonList(addressEntity));
+        StateEntity stateEntity = new StateEntity();
+        stateEntity.setUuid(stateUuid);
+        stateEntity.setStateName("state");
+        addressEntity.setState(stateEntity);
+        when(mockAddressService.getAllAddresses("database_accesstoken2")).thenReturn(Collections.singletonList(addressEntity));
 
         final String response = mockMvc
                 .perform(get("/address/customer")
@@ -404,7 +407,9 @@ public class AddressControllerTest {
     @Test
     public void shouldGetAllStates() throws Exception {
         final String stateUuid = UUID.randomUUID().toString();
-        final StateEntity stateEntity = new StateEntity(stateUuid, "stateName");
+        StateEntity stateEntity = new StateEntity();
+        stateEntity.setUuid(stateUuid);
+        stateEntity.setStateName("stateName");
         when(mockAddressService.getAllStates()).thenReturn(Collections.singletonList(stateEntity));
 
         final String response = mockMvc

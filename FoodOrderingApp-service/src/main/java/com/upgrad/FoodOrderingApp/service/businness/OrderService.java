@@ -1,12 +1,16 @@
 package com.upgrad.FoodOrderingApp.service.businness;
 
+
 import com.upgrad.FoodOrderingApp.service.dao.*;
 import com.upgrad.FoodOrderingApp.service.entity.*;
 import com.upgrad.FoodOrderingApp.service.exception.*;
 import org.aspectj.weaver.ast.Or;
 import org.hibernate.criterion.Order;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -45,7 +49,6 @@ public class OrderService {
             throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
         }
 
-
         if(couponName==null)
             throw new CouponNotFoundException("CPF-002", "Coupon name field should not be empty");
 
@@ -58,13 +61,12 @@ public class OrderService {
         return couponEntity;
     }
 
-    public List<OrderItemEntity> getOrderItemsByOrderId(Long orderId) throws AuthorizationFailedException {
-
-        List<OrderItemEntity> orderItemEntities = orderDao.getOrderItemsByOrderId(orderId);
-        return orderItemEntities;
-
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<OrderItemEntity> getOrderItemsByOrderId(Long orderId) {
+        return orderDao.getOrderItemsByOrderId(orderId);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<OrdersEntity> getOrdersByCustomerId(String authorizationToken) throws AuthorizationFailedException {
         CustomerAuthEntity customerAuthEntity = customerAuthDao.getCustomerAuthByAccessToken(authorizationToken);
         if (customerAuthEntity == null) {
@@ -75,11 +77,7 @@ public class OrderService {
             throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
         }
 
-
-
-        List<OrdersEntity> ordersEntities = orderDao.getOrdersByCustomerId(customerAuthEntity.getCustomer().getUuid());
-        return ordersEntities;
-
+        return orderDao.getOrdersByCustomerId(customerAuthEntity.getCustomer().getUuid());
     }
 
 

@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/")
 @CrossOrigin
 public class AddressController {
 
