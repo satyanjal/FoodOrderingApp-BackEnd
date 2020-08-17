@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.service.dao;
 
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
+import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -29,7 +30,7 @@ public class AddressDao {
         try {
             return entityManager.createNamedQuery("addressByUuid", AddressEntity.class).
                     setParameter("uuid", addressUuid).getSingleResult();
-        } catch (NoResultException nre) {return null;}
+        } catch (Exception e) {return null;}
     }
 
     public AddressEntity deleteAddress(AddressEntity addressEntity) {
