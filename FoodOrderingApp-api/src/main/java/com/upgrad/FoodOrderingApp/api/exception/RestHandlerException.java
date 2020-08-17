@@ -29,7 +29,7 @@ public class RestHandlerException {
     @ExceptionHandler(AuthorizationFailedException.class)
     public ResponseEntity<ErrorResponse> authorizationFailedException(AuthorizationFailedException exc, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse()
-                .code(exc.getCode()).message(exc.getErrorMessage()), HttpStatus.UNAUTHORIZED);
+                .code(exc.getCode()).message(exc.getErrorMessage()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(UpdateCustomerException.class)
