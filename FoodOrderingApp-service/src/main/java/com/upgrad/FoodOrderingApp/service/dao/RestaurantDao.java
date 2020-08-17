@@ -1,4 +1,4 @@
-/*package com.upgrad.FoodOrderingApp.service.dao;
+package com.upgrad.FoodOrderingApp.service.dao;
 
 
 import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
@@ -12,8 +12,7 @@ import java.util.List;
 //This Class is created to access DB with respect to Restaurant entity
 
 
- */
-/*
+
 @Repository
 public class RestaurantDao {
 
@@ -57,4 +56,3 @@ public class RestaurantDao {
         return restaurantEntity;
     }
 }
-*/
