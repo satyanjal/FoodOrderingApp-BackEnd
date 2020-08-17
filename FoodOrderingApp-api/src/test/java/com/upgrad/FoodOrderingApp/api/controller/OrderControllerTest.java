@@ -601,7 +601,7 @@ public class OrderControllerTest {
 
         final String orderId = UUID.randomUUID().toString();
         final Date orderDate = new Date();
-        return new OrderEntity(orderId, 200.50, couponEntity, 10.0,
+        return new OrdersEntity(orderId, 200.50, couponEntity, 10.0,
                 orderDate, paymentEntity, customerEntity, addressEntity, restaurantEntity);
     }
 
