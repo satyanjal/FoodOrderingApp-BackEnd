@@ -19,4 +19,10 @@ public class ItemDao {
             return entityManager.createNamedQuery("itemById",ItemEntity.class).setParameter("id",id).getSingleResult();
         }catch (NoResultException nre){return null;}
     }
+
+    public ItemEntity getItemByUuid(String uuid) {
+        try {
+            return entityManager.createNamedQuery("itemByUuid",ItemEntity.class).setParameter("uuidNq",uuid).getSingleResult();
+        }catch (NoResultException nre){return null;}
+    }
 }

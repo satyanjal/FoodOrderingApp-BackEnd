@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "customer_address")
 @NamedQueries(
         {
-                //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
+                @NamedQuery(name = "addressesByCustomer", query = "select c from CustomerAddressEntity c where c.customer.uuid = :customerUuidNq")
         }
 )
 

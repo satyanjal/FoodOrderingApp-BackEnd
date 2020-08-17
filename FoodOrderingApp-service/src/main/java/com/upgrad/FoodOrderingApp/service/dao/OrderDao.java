@@ -24,6 +24,18 @@ public class OrderDao {
         }
     }
 
+    public CouponEntity getCouponById(String couponId) {
+        try {
+            final CouponEntity couponEntity = entityManager.createNamedQuery("getCouponById", CouponEntity.class).
+                    setParameter("couponIdNq", couponId).getSingleResult();
+            return couponEntity;
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+
+
     public List<OrderItemEntity> getOrderItemsByOrderId(Long orderId){
         try {
             final List<OrderItemEntity> orderItemEntities = entityManager.createNamedQuery("orderItemsByOrderId", OrderItemEntity.class).
@@ -50,5 +62,24 @@ public class OrderDao {
                     setParameter("restaurant_id", restaurantid).getResultList();
         } catch (NoResultException nre) {return null;}
     }
+
+    public List<CustomerAddressEntity> getAddressesByCustomer(String customerUuid){
+        try {
+            return entityManager.createNamedQuery("addressesByCustomer", CustomerAddressEntity.class).
+                    setParameter("customerUuidNq", customerUuid).getResultList();
+        } catch (NoResultException nre) {return null;}
+    }
+
+    public OrdersEntity saveOrder(OrdersEntity ordersEntity) {
+        entityManager.persist(ordersEntity);
+        return ordersEntity;
+    }
+
+    public OrderItemEntity saveOrderItem(OrderItemEntity orderItemEntity){
+        entityManager.persist(orderItemEntity);
+        return orderItemEntity;
+    }
+
+
 
 }
