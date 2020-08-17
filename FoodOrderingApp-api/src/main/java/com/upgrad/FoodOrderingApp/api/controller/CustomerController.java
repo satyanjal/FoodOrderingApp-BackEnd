@@ -93,15 +93,16 @@ public class CustomerController {
     /**
      * This method is used to logout user.
      *
-     * @param accessToken -Token used for authenticating the user.
+     * @param bearerAccessToken -Token used for authenticating the user.
      * @return logoutResponse
      * @throws AuthorizationFailedException - if the user is not signed in the application and tries to logout of the application
      */
     @RequestMapping(method = RequestMethod.POST, path = "/customer/logout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<LogoutResponse> logout(@RequestHeader("access-token") final String accessToken)
+    public ResponseEntity<LogoutResponse> logout(@RequestHeader("authorization") final String bearerAccessToken)
             throws AuthorizationFailedException {
 
         CustomerAuthEntity customerAuthEntity;
+        String accessToken = bearerAccessToken.split("Bearer ")[1];
         customerAuthEntity = customerService.logout(accessToken);
         LogoutResponse logoutResponse = new LogoutResponse();
         logoutResponse.id(customerAuthEntity.getUuid()).message("LOGGED OUT SUCCESSFULLY");
