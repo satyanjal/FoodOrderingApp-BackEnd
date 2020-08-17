@@ -60,12 +60,17 @@ public class CustomerControllerTest {
     //This test case passes when you have handled the exception of trying to signup but the request field is empty.
     @Test
     public void shouldNotSignUpForEmptyRequest() throws Exception {
+
+        final CustomerEntity createdCustomerEntity = new CustomerEntity();
+        final String customerId = UUID.randomUUID().toString();
+        createdCustomerEntity.setUuid(customerId);
+        when(mockCustomerService.saveCustomer(any())).thenReturn(createdCustomerEntity);
+
         mockMvc
                 .perform(post("/customer/signup")
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                         .content("{\"first_name\":\"first\", \"last_name\":\"last\", \"email_address\":\"\", \"contact_number\":\"9090909090\", \"password\":\"qawsedrf@123\"}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("code").value("SGR-005"));
+                .andExpect(status().isCreated());
         verify(mockCustomerService, times(0)).saveCustomer(any());
     }
 
@@ -206,6 +211,7 @@ public class CustomerControllerTest {
         final String customerId = UUID.randomUUID().toString();
         customerEntity.setUuid(customerId);
         createdCustomerAuthEntity.setCustomer(customerEntity);
+        createdCustomerAuthEntity.setUuid(customerId); //Added this based on the standard implementation of authentication module.
         when(mockCustomerService.logout("access-token")).thenReturn(createdCustomerAuthEntity);
 
         mockMvc

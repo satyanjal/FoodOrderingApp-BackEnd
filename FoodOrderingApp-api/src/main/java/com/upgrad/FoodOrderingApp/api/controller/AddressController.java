@@ -39,7 +39,7 @@ public class AddressController {
         final AddressEntity createdAddress = addressService.createAddress(addressEntity, saveAddressRequest.getStateUuid(), accessToken);
         final SaveAddressResponse saveAddressResponse = new SaveAddressResponse().id(createdAddress.getId().toString()).status("ADDRESS SUCCESSFULLY REGISTERED");
 
-        return new ResponseEntity<SaveAddressResponse>(saveAddressResponse, HttpStatus.CREATED);
+        return new ResponseEntity<SaveAddressResponse>(saveAddressResponse, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/address/customer", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
