@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 @Table(name = "address")
 @NamedQueries(
         {
-                //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
+                @NamedQuery(name = "addressByUuid", query = "select a from AddressEntity a where a.uuid = :uuid")
         }
 )
 
@@ -54,7 +54,7 @@ public class AddressEntity {
 
     public void setId(Long id) {this.id = id;}
 
-    public String getUuid() {return uuid;}
+    public String getStateByUUID() {return uuid;}
 
     public void setUuid(String uuid) {this.uuid = uuid;}
 
