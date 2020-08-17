@@ -159,8 +159,8 @@ public class AddressControllerTest {
                         .content("{\"flat_building_name\":\"xyz\", \"locality\":\"abc\", \"city\":\"\", \"pincode\":\"123456\", \"state_uuid\":\"testUUID\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("code").value("SAR-001"));
-        verify(mockCustomerService, times(1)).getCustomer("database_accesstoken2");
-        verify(mockAddressService, times(1)).getStateByUUID("testUUID");
+        verify(mockCustomerService, times(0)).getCustomer("database_accesstoken2");
+        verify(mockAddressService, times(0)).getStateByUUID("testUUID");
         verify(mockAddressService, times(1)).createAddress(any(), any(), any());
     }
 
