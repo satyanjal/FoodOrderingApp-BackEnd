@@ -4,6 +4,8 @@
 //import com.upgrad.FoodOrderingApp.api.model.CustomerOrderResponse;
 //import com.upgrad.FoodOrderingApp.api.model.ItemQuantity;
 //import com.upgrad.FoodOrderingApp.api.model.SaveOrderRequest;
+//import com.upgrad.FoodOrderingApp.service.businness.*;
+//import com.upgrad.FoodOrderingApp.service.entity.*;
 //import com.upgrad.FoodOrderingApp.service.exception.*;
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
@@ -67,18 +69,19 @@
 //        final SaveOrderRequest saveOrderRequest = getSaveOrderRequest();
 //        when(mockPaymentService.getPaymentByUUID(saveOrderRequest.getPaymentId().toString()))
 //                .thenReturn(new PaymentEntity());
-//        when(mockAddressService.getAddressByUUID(saveOrderRequest.getAddressId(), customerEntity))
+//        when(mockAddressService.getAddressByUUID(saveOrderRequest.getAddressId()))
 //                .thenReturn(new AddressEntity());
 //        when(mockRestaurantService.restaurantByUUID(saveOrderRequest.getRestaurantId().toString()))
 //                .thenReturn(new RestaurantEntity());
-//        when(mockOrderService.getCouponByCouponId(saveOrderRequest.getCouponId().toString()))
+//        when(mockOrderService.getCouponByName(any(), any()))
 //                .thenReturn(new CouponEntity());
 //
-//        final OrderEntity orderEntity = new OrderEntity();
+//        final OrdersEntity orderEntity = new OrdersEntity();
 //        final String orderId = UUID.randomUUID().toString();
+//        OrderItemEntity orderItemEntity = new OrderItemEntity();
 //        orderEntity.setUuid(orderId);
-//        when(mockOrderService.saveOrder(any())).thenReturn(orderEntity);
-//        when(mockOrderService.saveOrderItem(any())).thenReturn(new OrderItemEntity());
+//        when(mockOrderService.saveOrder(any(), any(), any(), any(), any(), any(), any()).thenReturn(orderEntity));
+//        when(mockOrderService.saveOrder(any(), any(), any(), any(), any(), any(), any()).thenReturn(orderItemEntity));
 //
 //        mockMvc
 //                .perform(post("/order")
@@ -91,14 +94,10 @@
 //                .getCustomer("database_accesstoken2");
 //        verify(mockPaymentService, times(1))
 //                .getPaymentByUUID(saveOrderRequest.getPaymentId().toString());
-//        verify(mockAddressService, times(1))
-//                .getAddressByUUID(saveOrderRequest.getAddressId(), customerEntity);
 //        verify(mockRestaurantService, times(1))
 //                .restaurantByUUID(saveOrderRequest.getRestaurantId().toString());
-//        verify(mockOrderService, times(1))
-//                .getCouponByCouponId(saveOrderRequest.getCouponId().toString());
 //        verify(mockOrderService, times(1)).saveOrder(any());
-//        verify(mockOrderService, times(1)).saveOrderItem(any());
+//        verify(mockOrderService, times(1)).saveOrder(any());
 //    }
 //
 //    //This test case passes when you have handled the exception of trying to save an order while you are not logged  in.
@@ -119,9 +118,9 @@
 //        verify(mockPaymentService, times(0)).getPaymentByUUID(anyString());
 //        verify(mockAddressService, times(0)).getAddressByUUID(anyString(), any());
 //        verify(mockRestaurantService, times(0)).restaurantByUUID(anyString());
-//        verify(mockOrderService, times(0)).getCouponByCouponId(anyString());
+//        verify(mockOrderService, times(0)).getCouponByName(anyString());
 //        verify(mockOrderService, times(0)).saveOrder(any());
-//        verify(mockOrderService, times(0)).saveOrderItem(any());
+//        verify(mockOrderService, times(0)).saveOrder(any());
 //    }
 //
 //    //This test case passes when you have handled the exception of trying to save an order while you are already logged out.
@@ -141,9 +140,9 @@
 //        verify(mockPaymentService, times(0)).getPaymentByUUID(anyString());
 //        verify(mockAddressService, times(0)).getAddressByUUID(anyString(), any());
 //        verify(mockRestaurantService, times(0)).restaurantByUUID(anyString());
-//        verify(mockOrderService, times(0)).getCouponByCouponId(anyString());
-//        verify(mockOrderService, times(0)).saveOrder(any());
-//        verify(mockOrderService, times(0)).saveOrderItem(any());
+//        verify(mockOrderService, times(0)).getCouponByName(anyString(), anyString());
+//        verify(mockOrderService, times(0)).saveOrder((any(), any(), any(), any(), any(), any(), any()));
+//        verify(mockOrderService, times(0)).saveOrder((any(), any(), any(), any(), any(), any(), any()));
 //    }
 //
 //    //This test case passes when you have handled the exception of trying to save an order while your session is
@@ -164,9 +163,9 @@
 //        verify(mockPaymentService, times(0)).getPaymentByUUID(anyString());
 //        verify(mockAddressService, times(0)).getAddressByUUID(anyString(), any());
 //        verify(mockRestaurantService, times(0)).restaurantByUUID(anyString());
-//        verify(mockOrderService, times(0)).getCouponByCouponId(anyString());
+//        verify(mockOrderService, times(0)).getCouponByName(anyString());
 //        verify(mockOrderService, times(0)).saveOrder(any());
-//        verify(mockOrderService, times(0)).saveOrderItem(any());
+//        verify(mockOrderService, times(0)).saveOrder(any());
 //    }
 //
 //    //This test case passes when you have handled the exception of trying to save an order while the payment id you gave
@@ -193,9 +192,9 @@
 //                .getPaymentByUUID(saveOrderRequest.getPaymentId().toString());
 //        verify(mockAddressService, times(0)).getAddressByUUID(anyString(), any());
 //        verify(mockRestaurantService, times(0)).restaurantByUUID(anyString());
-//        verify(mockOrderService, times(1)).getCouponByCouponId(anyString());
+//        verify(mockOrderService, times(1)).getCouponByName(anyString());
 //        verify(mockOrderService, times(0)).saveOrder(any());
-//        verify(mockOrderService, times(0)).saveOrderItem(any());
+//        verify(mockOrderService, times(0)).saveOrder(any());
 //    }
 //
 //    //This test case passes when you have handled the exception of trying to save an order while the address id you
@@ -228,9 +227,9 @@
 //        verify(mockAddressService, times(1))
 //                .getAddressByUUID(saveOrderRequest.getAddressId(), customerEntity);
 //        verify(mockRestaurantService, times(0)).restaurantByUUID(anyString());
-//        verify(mockOrderService, times(1)).getCouponByCouponId(anyString());
+//        verify(mockOrderService, times(1)).getCouponByName(anyString());
 //        verify(mockOrderService, times(0)).saveOrder(any());
-//        verify(mockOrderService, times(0)).saveOrderItem(any());
+//        verify(mockOrderService, times(0)).saveOrder(any());
 //    }
 //
 //    //This test case passes when you have handled the exception of trying to save an order while the address if you
@@ -263,9 +262,9 @@
 //        verify(mockAddressService, times(1))
 //                .getAddressByUUID(saveOrderRequest.getAddressId(), customerEntity);
 //        verify(mockRestaurantService, times(0)).restaurantByUUID(anyString());
-//        verify(mockOrderService, times(1)).getCouponByCouponId(anyString());
+//        verify(mockOrderService, times(1)).getCouponByName(anyString());
 //        verify(mockOrderService, times(0)).saveOrder(any());
-//        verify(mockOrderService, times(0)).saveOrderItem(any());
+//        verify(mockOrderService, times(0)).saveOrder();
 //    }
 //
 //    //This test case passes when you have handled the exception of trying to save an order while the restaurant id
@@ -575,7 +574,7 @@
 //        return request;
 //    }
 //
-//    private OrderEntity getOrderEntity(final CustomerEntity customerEntity) {
+//    private OrdersEntity getOrderEntity(final CustomerEntity customerEntity) {
 //        final String stateId = UUID.randomUUID().toString();
 //        final StateEntity stateEntity = new StateEntity(stateId, "someState");
 //
@@ -602,7 +601,7 @@
 //
 //        final String orderId = UUID.randomUUID().toString();
 //        final Date orderDate = new Date();
-//        return new OrderEntity(orderId, 200.50, couponEntity, 10.0,
+//        return new OrdersEntity(orderId, 200.50, couponEntity, 10.0,
 //                orderDate, paymentEntity, customerEntity, addressEntity, restaurantEntity);
 //    }
 //
