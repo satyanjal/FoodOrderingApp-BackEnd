@@ -126,7 +126,7 @@ public class RestaurantService {
 
         restaurantEntity.setCustomerRating(Double.parseDouble(format.format(newCustomerRating)));
 
-        //Updating the restautant in the db using the method updateRestaurantRating of restaurantDao.
+        //Updating the restaurant in the db using the method updateRestaurantRating of restaurantDao.
         return restaurantDao.updateRestaurantRating(restaurantEntity);
     }
 
