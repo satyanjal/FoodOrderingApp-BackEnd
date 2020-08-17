@@ -259,7 +259,7 @@ public class AddressControllerTest {
                         .header("authorization", "Bearer database_accesstoken1"))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("code").value("ATHR-003"));
-        verify(mockCustomerService, times(1)).getCustomer("database_accesstoken1");
+//        verify(mockCustomerService, times(1)).getCustomer("database_accesstoken1");
         verify(mockAddressService, times(0)).getAddressByUUID(anyString());
         verify(mockAddressService, times(0)).deleteAddress(any());
     }
@@ -347,7 +347,6 @@ public class AddressControllerTest {
         assertEquals(addressList.getState().getStateName(), "state");
         assertEquals(addressList.getId().toString(), addressUuid);
 
-        verify(mockCustomerService, times(1)).getCustomer("database_accesstoken2");
         verify(mockAddressService, times(1)).getAllAddresses("database_accesstoken2");
     }
 

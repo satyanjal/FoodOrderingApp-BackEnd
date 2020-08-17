@@ -101,8 +101,9 @@ public class CustomerController {
     public ResponseEntity<LogoutResponse> logout(@RequestHeader("access-token") final String accessToken)
             throws AuthorizationFailedException {
 
+        String splittedAccessToken = accessToken.split("Bearer ")[1];
         CustomerAuthEntity customerAuthEntity;
-        customerAuthEntity = customerService.logout(accessToken);
+        customerAuthEntity = customerService.logout(splittedAccessToken);
         LogoutResponse logoutResponse = new LogoutResponse();
         logoutResponse.id(customerAuthEntity.getUuid()).message("LOGGED OUT SUCCESSFULLY");
         return new ResponseEntity<>(logoutResponse, HttpStatus.OK);
@@ -163,8 +164,8 @@ public class CustomerController {
             throw new UpdateCustomerException("UCR-003", "No field should be empty");
         }
 
-        customerService.validateAccessToken(accessToken);//For handling authentication related errors.
-        CustomerEntity customer = customerService.getCustomer(accessToken);
+        String splittedAccessToken = accessToken.split("Bearer ")[1];
+        CustomerEntity customer = customerService.getCustomer(splittedAccessToken);
         String newPassword = updatePasswordRequest.getNewPassword();
         String oldPassword = updatePasswordRequest.getOldPassword();
         CustomerEntity updatedCustomer = customerService.updateCustomerPassword(oldPassword, newPassword, customer);
