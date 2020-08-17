@@ -56,7 +56,7 @@ public class AddressController {
             addressList.setFlatBuildingName(addressEntity.getFlatBuilNumber());
             addressList.setLocality(addressEntity.getLocality());
             addressList.setPincode(addressEntity.getPincode());
-            addressList.setId(UUID.fromString(addressEntity.getUuid()));
+            addressList.setId(UUID.fromString(addressEntity.getStateByUUID()));
 
             AddressListState addressListState = new AddressListState();
             addressListState.setId(UUID.fromString(addressEntity.getState().getUuid()));

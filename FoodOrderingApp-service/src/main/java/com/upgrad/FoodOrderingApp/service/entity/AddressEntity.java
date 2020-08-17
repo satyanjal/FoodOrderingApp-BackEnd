@@ -54,7 +54,7 @@ public class AddressEntity {
 
     public void setId(Long id) {this.id = id;}
 
-    public String getUuid() {return uuid;}
+    public String getStateByUUID() {return uuid;}
 
     public void setUuid(String uuid) {this.uuid = uuid;}
 
