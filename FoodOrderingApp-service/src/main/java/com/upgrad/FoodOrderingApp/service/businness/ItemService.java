@@ -31,6 +31,12 @@ public class ItemService {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CategoryDao categoryDao;
+
+    @Autowired
+    private RestaurantCategoryDao restaurantCategoryDao;
+
 
     @Transactional(propagation = Propagation.REQUIRED)
     public List<ItemEntity> getFivePopularItems(final String restaurantUuid,final String authorizationToken) throws AuthorizationFailedException, RestaurantNotFoundException {
@@ -76,4 +82,17 @@ public class ItemService {
         return arr;
     }
 
+    public List<ItemEntity> getItemsByCategoryAndRestaurant(String restaurantUuid, String uuid) {
+        RestaurantEntity restaurantEntity = restaurantDao.getRestaurantByUuid(restaurantUuid);
+        List<RestaurantCategoryEntity> restaurantCategoryEntity = restaurantCategoryDao.getCategoryByRestaurantId(restaurantEntity);
+
+        List<ItemEntity> itemEntities = new ArrayList<>();
+        for (RestaurantCategoryEntity restaurantCategoryEntity1: restaurantCategoryEntity) {
+            List<CategoryItemEntity> categoryItemEntities = categoryDao.getCategoryItemsById(restaurantCategoryEntity1.getCategory().getUuid());
+            for (CategoryItemEntity categoryItemEntity : categoryItemEntities) {
+                itemEntities.add(categoryItemEntity.getItem());
+            }
+        }
+        return itemEntities;
+    }
 }

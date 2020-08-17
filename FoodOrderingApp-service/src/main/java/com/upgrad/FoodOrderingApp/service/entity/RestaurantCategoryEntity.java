@@ -7,7 +7,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "restaurant_category")
 @NamedQueries(
         {
-                //@NamedQuery(name = "answerByUuid", query = "select a from AnswerEntity a where a.uuid = :uuid")
+                @NamedQuery(name = "categoryByRestaurantId", query = "select a from RestaurantCategoryEntity a where a.restaurant = :restaurant"),
+                @NamedQuery(name = "restaurantByCategoryId", query = "select a from RestaurantCategoryEntity a where a.category = :category"),
         }
 )
 

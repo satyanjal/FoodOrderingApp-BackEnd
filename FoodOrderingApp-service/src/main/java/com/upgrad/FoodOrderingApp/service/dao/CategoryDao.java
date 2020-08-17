@@ -40,4 +40,11 @@ public class CategoryDao {
                     setParameter("CategoryUuidNq", categoryId).getSingleResult();
         } catch (NoResultException nre) {return null;}
     }
+
+    public CategoryEntity getCategoryById(String categoryId) {
+        try {
+            return entityManager.createNamedQuery("categoryById", CategoryEntity.class).
+                    setParameter("CategoryId", categoryId).getSingleResult();
+        } catch (NoResultException nre) {return null;}
+    }
 }

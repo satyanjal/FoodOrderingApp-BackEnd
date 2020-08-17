@@ -29,7 +29,8 @@ public class ItemController {
     public ResponseEntity<ItemListResponse> getFivePopularItems(@PathVariable("restaurant_id") final String restaurantUuid,
                                                                 @RequestHeader("authorization") final String authorization) throws AuthorizationFailedException, RestaurantNotFoundException {
 
-        final List<ItemEntity> itemEntities = itemService.getFivePopularItems(restaurantUuid, authorization);
+        String accessToken = authorization.split("Bearer ")[1];
+        final List<ItemEntity> itemEntities = itemService.getFivePopularItems(restaurantUuid, accessToken);
 
         ItemListResponse itemListResponse = new ItemListResponse();
         for (ItemEntity itemEntity : itemEntities) {
