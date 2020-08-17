@@ -323,7 +323,7 @@ public class AddressControllerTest {
         addressEntity.setFlatBuilNumber("flatBuildNo");
         final String stateUuid = UUID.randomUUID().toString();
         addressEntity.setState(new StateEntity(stateUuid, "state"));
-        when(mockAddressService.getAllAddresses("\"database_accesstoken2")).thenReturn(Collections.singletonList(addressEntity));
+        when(mockAddressService.getAllAddresses("database_accesstoken2")).thenReturn(Collections.singletonList(addressEntity));
 
         final String response = mockMvc
                 .perform(get("/address/customer")

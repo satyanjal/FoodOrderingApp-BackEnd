@@ -28,16 +28,13 @@ public class ItemService {
     @Autowired
     private CustomerAuthDao customerAuthDao;
 
+    @Autowired
+    private CustomerService customerService;
+
+
     @Transactional(propagation = Propagation.REQUIRED)
     public List<ItemEntity> getFivePopularItems(final String restaurantUuid,final String authorizationToken) throws AuthorizationFailedException, RestaurantNotFoundException {
-        CustomerAuthEntity customerAuthEntity = customerAuthDao.getCustomerAuthByAccessToken(authorizationToken);
-        if (customerAuthEntity == null) {
-            throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in.");
-        } else if (customerAuthEntity.getLogoutAt()!=null) {
-            throw new AuthorizationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
-        } else if (customerAuthEntity.getExpiresAt().isBefore(ZonedDateTime.now())) {
-            throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
-        }
+        CustomerEntity customerEntity = customerService.getCustomer(authorizationToken);
 
         RestaurantEntity restaurantEntity = restaurantDao.getRestaurantByUuid(restaurantUuid);
 

@@ -2,14 +2,13 @@ package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.CustomerAuthDao;
 import com.upgrad.FoodOrderingApp.service.dao.OrderDao;
-import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
-import com.upgrad.FoodOrderingApp.service.entity.OrderItemEntity;
-import com.upgrad.FoodOrderingApp.service.entity.OrdersEntity;
+import com.upgrad.FoodOrderingApp.service.entity.*;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CouponNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -23,17 +22,12 @@ public class OrderService {
     @Autowired
     CustomerAuthDao customerAuthDao;
 
+    @Autowired
+    private CustomerService customerService;
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public CouponEntity getCouponByName(String couponName, final String authorizationToken) throws AuthorizationFailedException, CouponNotFoundException {
-
-        CustomerAuthEntity customerAuthEntity = customerAuthDao.getCustomerAuthByAccessToken(authorizationToken);
-        if (customerAuthEntity == null) {
-            throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in.");
-        } else if (customerAuthEntity.getLogoutAt()!=null) {
-            throw new AuthorizationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
-        } else if (customerAuthEntity.getExpiresAt().isBefore(ZonedDateTime.now())) {
-            throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
-        }
-
+        CustomerEntity customerEntity = customerService.getCustomer(authorizationToken);
 
         if(couponName==null)
             throw new CouponNotFoundException("CPF-002", "Coupon name field should not be empty");
@@ -47,27 +41,14 @@ public class OrderService {
         return couponEntity;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<OrderItemEntity> getOrderItemsByOrderId(Long orderId) throws AuthorizationFailedException {
-
-        List<OrderItemEntity> orderItemEntities = orderDao.getOrderItemsByOrderId(orderId);
-        return orderItemEntities;
-
+        return orderDao.getOrderItemsByOrderId(orderId);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public List<OrdersEntity> getOrdersByCustomerId(String authorizationToken) throws AuthorizationFailedException {
-        CustomerAuthEntity customerAuthEntity = customerAuthDao.getCustomerAuthByAccessToken(authorizationToken);
-        if (customerAuthEntity == null) {
-            throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in.");
-        } else if (customerAuthEntity.getLogoutAt()!=null) {
-            throw new AuthorizationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
-        } else if (customerAuthEntity.getExpiresAt().isBefore(ZonedDateTime.now())) {
-            throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
-        }
-
-
-
-        List<OrdersEntity> ordersEntities = orderDao.getOrdersByCustomerId(customerAuthEntity.getCustomer().getUuid());
-        return ordersEntities;
-
+        CustomerEntity customerEntity = customerService.getCustomer(authorizationToken);
+        return orderDao.getOrdersByCustomerId(customerEntity.getUuid());
     }
 }
