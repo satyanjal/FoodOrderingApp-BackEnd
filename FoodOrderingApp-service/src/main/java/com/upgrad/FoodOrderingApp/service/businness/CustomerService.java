@@ -61,8 +61,22 @@ public class CustomerService {
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity saveCustomer(CustomerEntity customerEntity) throws SignUpRestrictedException {
 
-        CustomerEntity existingUser1 = customerDao.getCustomerByContactNumber(customerEntity.getContactNumber());
+        if (customerEntity.getFirstName() == null
+                || customerEntity.getContactNumber() == null
+                || customerEntity.getEmail() == null
+                || customerEntity.getPassword() == null
+                || customerEntity.getFirstName().equals("")
+                || customerEntity.getContactNumber().equals("")
+                || customerEntity.getEmail().equals("")
+                || customerEntity.getPassword().equals("")
+                || customerEntity.getFirstName().isEmpty()
+                || customerEntity.getEmail().isEmpty() || customerEntity.getPassword().isEmpty()
+                || customerEntity.getContactNumber().isEmpty()
+        ) {
+            throw new SignUpRestrictedException("SGR-005", "Except last name all fields should be filled");
+        }
 
+        CustomerEntity existingUser1 = customerDao.getCustomerByContactNumber(customerEntity.getContactNumber());
         if (existingUser1 != null) {
             throw new SignUpRestrictedException("SGR-001", "This contact number is already registered! Try other contact number.");
         }
@@ -77,17 +91,6 @@ public class CustomerService {
 
         if(WeakPassword(customerEntity.getPassword())){
             throw new SignUpRestrictedException("SGR-004", "Weak password!");
-        }
-
-        if (customerEntity.getFirstName() == null
-                || customerEntity.getContactNumber() == null
-                || customerEntity.getEmail() == null
-                || customerEntity.getPassword() == null
-                || customerEntity.getFirstName().isEmpty()
-                || customerEntity.getEmail().isEmpty() || customerEntity.getPassword().isEmpty()
-                || customerEntity.getContactNumber().isEmpty()
-        ) {
-            throw new SignUpRestrictedException("SGR-005", "Except last name all fields should be filled");
         }
 
         String[] encryptedText = passwordCryptographyProvider.encrypt(customerEntity.getPassword());
